@@ -38,10 +38,21 @@ export default function App() {
 
   // Ensure page opens at top landing page on load / PWA open
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
-    if (window.location.hash) {
-      window.history.replaceState(null, '', window.location.pathname);
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
     }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+
+    // Secondary reset after DOM & layout calculations settle
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    }, 50);
+
+    return () => clearTimeout(timer);
   }, []);
 
   // Check clinic open/closed status based on actual local time
