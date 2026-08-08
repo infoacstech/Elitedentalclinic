@@ -36,6 +36,14 @@ export default function App() {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
+  // Ensure page opens at top landing page on load / PWA open
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
+
   // Check clinic open/closed status based on actual local time
   useEffect(() => {
     const checkClinicStatus = () => {

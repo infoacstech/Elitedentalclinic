@@ -26,7 +26,8 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
 
   const [inputMessage, setInputMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const isInitialMount = useRef(true);
 
   const suggestedQuestions = currentLang === 'en' ? [
     "Is Root Canal Treatment (RCT) painful?",
@@ -40,12 +41,14 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
     "जवाहर कॉलनीतील क्लिनिकची वेळ काय आहे?"
   ];
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   useEffect(() => {
-    scrollToBottom();
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   }, [messages]);
 
   const getClientFallback = (query: string): string => {
@@ -187,7 +190,7 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 bg-slate-50/50">
+          <div ref={chatContainerRef} className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 bg-slate-50/50">
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -226,8 +229,6 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
                 <span>Dr. Ankita's AI is processing your dental query...</span>
               </div>
             )}
-
-            <div ref={messagesEndRef} />
           </div>
 
           {/* Suggested Quick Questions */}
