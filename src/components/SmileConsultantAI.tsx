@@ -48,6 +48,45 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
     scrollToBottom();
   }, [messages]);
 
+  const getClientFallback = (query: string): string => {
+    const q = query.toLowerCase();
+    const isMarathi = /[\u0900-\u097F]/.test(query) || q.includes("marathi") || q.includes("कधी") || q.includes("काय") || q.includes("माहिती");
+
+    if (q.includes("rct") || q.includes("root canal") || q.includes("कॅनाल") || q.includes("रूट") || q.includes("painful") || q.includes("वेदना")) {
+      return isMarathi 
+        ? `**रूट कॅनाल ट्रिटमेंट (RCT) ची सविस्तर माहिती:**\n\n• **वेदना होतात का?** अजिबात नाही! आधुनिक लोकल ॲनेस्थेशियामुळे उपचार पूर्णपणे त्रासमुक्त आणि सुखकर होतो.\n• **हा उपचार का केला जातो?** किडलेला किंवा संसर्ग झालेला दात काढण्याऐवजी तो कायमचा वाचवण्यासाठी RCT सर्वोत्तम उपाय आहे.\n• **फायदे:** दातदुखी लगेच थांबते आणि तुमचा नैसर्गिक दात सुरक्षित राहतो.\n\nडॉ. अंकिता गोकलानी (M.D.S) यांच्याशी सल्ल्यासाठी **९९२२३००८४२** वर संपर्क साधा किंवा ऑनलाईन अपॉइंटमेंट बुक करा!`
+        : `**Root Canal Treatment (RCT) Information:**\n\n• **Is RCT Painful?** No! With modern local anesthesia, Root Canal Treatment is virtually painless and provides immediate relief from severe tooth pain.\n• **Why is it done?** RCT cleans and disinfects the interior pulp of a deeply decayed tooth, preserving your natural tooth structure so you don't need an extraction.\n• **Procedure:** The infection is removed, the root canal is sealed, and a protective custom crown is placed.\n\nTo schedule a personal consultation with Dr. Ankita Goklani (M.D.S), call **9922300842** or book an appointment online!`;
+    }
+
+    if (q.includes("implant") || q.includes("इम्प्लांट") || q.includes("missing tooth") || q.includes("दात बसवणे")) {
+      return isMarathi
+        ? `**इम्प्लांट पद्धतीने दात बसवणे (Dental Implants):**\n\n• **काय आहे इम्प्लांट?** इम्प्लांट हा पडलेल्या दातांच्या जागी नैसर्गिक दातासारखाच मजबूत दात बसवण्याचा सर्वात आधुनिक आणि कायमस्वरूपी उपाय आहे.\n• **फायदे:** नैसर्गिक दिसणारी रचना, मजबूती, जबड्याच्या हाडाचे रक्षण आणि आयुष्याभर टिकणारा उपाय.\n\nडॉ. अंकिता गोकलानी (M.D.S) यांच्याकडे इम्प्लांट सल्ल्यासाठी **९९२२३००८४२** वर संपर्क साधा!`
+        : `**Benefits of Dental Implants:**\n\nDental implants are the gold standard for replacing missing teeth.\n\n• **Key Advantages:** Looks and functions like natural teeth, preserves jawbone density, and protects adjacent healthy teeth.\n\nFor an implant assessment with Dr. Ankita Goklani (M.D.S), call **9922300842** or book an appointment today!`;
+    }
+
+    if (q.includes("timing") || q.includes("hours") || q.includes("address") || q.includes("location") || q.includes("कधी") || q.includes("पत्ता") || q.includes("वेळ")) {
+      return isMarathi
+        ? `**डॉ. अंकिता गोकलानीज् एलाईट डेंटल केअर (दातांचा दवाखाना):**\n\n• **पत्ता:** ७१/ए, जवाहर कॉलनी, छत्रपती संभाजीनगर.\n• **सकाळची वेळ:** १०:०० ते दुपारी २:००\n• **संध्याकाळची वेळ:** ५:०० ते रात्री ९:००\n• **रविवार:** अपॉइंटमेंटनुसार\n• **संपर्क:** ९९२२३००८४२`
+        : `**Dr. Ankita Goklani's Elite Dental Care:**\n\n• **Address:** 71/A, Jawahar Colony, Chhatrapati Sambhajinagar.\n• **Morning:** 10:00 AM - 2:00 PM\n• **Evening:** 5:00 PM - 9:00 PM\n• **Sunday:** By Appointment\n• **Direct Helpline:** 9922300842`;
+    }
+
+    if (q.includes("child") || q.includes("kid") || q.includes("pediatric") || q.includes("मुले") || q.includes("बाळ")) {
+      return isMarathi
+        ? `**लहान मुलांचे दंत उपचार (Pediatric Dentistry):**\n\nहोय, डॉ. अंकिता गोकलानी मुलांसाठी अत्यंत काळजीपूर्वक व स्नेहाळ दंत उपचार पुरवतात. फ्लुओराइड कोटिंग आणि किडीवरील उपचारांसाठी **९९२२३००८४२** वर कॉल करा!`
+        : `**Pediatric & Child Dental Care:**\n\nYes! Dr. Ankita Goklani provides gentle, child-friendly dental care including cavity prevention sealants and painless tooth restorations. Call **9922300842**!`;
+    }
+
+    if (q.includes("brace") || q.includes("aligner") || q.includes("straight") || q.includes("वेडेवाकडे") || q.includes("तार")) {
+      return isMarathi
+        ? `**दातांचे ब्रेसेस व अलाईनर्स:**\n\nआम्ही वेडेवाकडे दात सरळ करण्यासाठी मेटल ब्रेसेस, सेरामिक ब्रेसेस आणि इनव्हिजिबल अलाईनर्स (Invisalign) चे उपचार पुरवतो. सल्ल्यासाठी **९९२२३००८४२** वर संपर्क साधू शकता!`
+        : `**Teeth Straightening (Braces & Aligners):**\n\nWe offer Metal Braces, Ceramic Tooth-Colored Braces, and Clear Invisible Aligners to correct crooked or misaligned teeth. Call **9922300842** for a consultation!`;
+    }
+
+    return isMarathi
+      ? `**डॉ. अंकिता गोकलानीज् एलाईट डेंटल केअर मध्ये आपले स्वागत आहे!**\n\nआमच्या क्लिनिकमध्ये रूट कॅनाल, इम्प्लांट, डिजिटल एक्स-रे, दात पांढरे करणे आणि लहान मुलांचे दंत उपचार उपलब्ध आहेत. सल्ल्यासाठी **९९२२३००८४२** वर कॉल करा किंवा ऑनलाईन अपॉइंटमेंट बुक करा!`
+      : `**Welcome to Dr. Ankita Goklani's Elite Dental Care!**\n\nWe offer painless Root Canal Treatments, Dental Implants, Braces, Digital X-Rays, and Child Dental Care in Jawahar Colony. To consult Dr. Ankita Goklani (M.D.S), call **9922300842** or click "Book Appointment" above!`;
+  };
+
   const handleSend = async (textToSend?: string) => {
     const text = textToSend || inputMessage;
     if (!text.trim() || loading) return;
@@ -75,23 +114,22 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
 
       const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to communicate with AI Assistant');
-      }
+      const replyText = data?.reply || getClientFallback(text);
 
       const assistantMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         sender: 'assistant',
-        text: data.reply,
+        text: replyText,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
 
       setMessages(prev => [...prev, assistantMsg]);
     } catch (err: any) {
+      const fallbackReply = getClientFallback(text);
       const errorMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         sender: 'assistant',
-        text: "I am having trouble connecting right now. Please call Dr. Ankita Goklani's clinic directly at 9922300842 for immediate assistance!",
+        text: fallbackReply,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       setMessages(prev => [...prev, errorMsg]);
