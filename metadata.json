@@ -1,0 +1,6 @@
+{
+  "name": "Dr. Ankita Goklani's Elite Dental Care",
+  "description": "Official website for Dr. Ankita Goklani's Elite Dental Care clinic in Chhatrapati Sambhajinagar offering advanced digital dental treatments, implants, RCT, orthodontics, and pediatric dentistry.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
