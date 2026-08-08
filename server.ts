@@ -64,54 +64,118 @@ function getGeminiClient(): GoogleGenAI | null {
 // Fallback Dental Knowledge Base Response Engine
 function getKnowledgeBaseResponse(userQuery: string): string {
   const query = userQuery.toLowerCase();
-  const isMarathi = /[\u0900-\u097F]/.test(userQuery) || query.includes("marathi") || query.includes("कधी") || query.includes("काय");
+  const isMarathi = /[\u0900-\u097F]/.test(userQuery) || query.includes("marathi") || query.includes("कधी") || query.includes("काय") || query.includes("माहिती") || query.includes("नाही") || query.includes("आहे");
 
-  // 1. Root Canal Treatment (RCT)
-  if (query.includes("rct") || query.includes("root canal") || query.includes("कॅनाल") || query.includes("रूट") || query.includes("painful") || query.includes("वेदना")) {
+  // Greetings
+  if (query.match(/^(hi|hello|hey|namaste|greetings|नमस्ते|नमस्कार)/i)) {
     if (isMarathi) {
-      return `**रूट कॅनाल ट्रिटमेंट (RCT) ची सविस्तर माहिती:**\n\n• **वेदना होतात का?** अजिबात नाही! आधुनिक लोकल ॲनेस्थेशियामुळे उपचार पूर्णपणे त्रासमुक्त आणि सुखकर होतो.\n• **हा उपचार का केला जातो?** किडलेला किंवा संसर्ग झालेला दात काढण्याऐवजी तो कायमचा वाचवण्यासाठी RCT सर्वोत्तम उपाय आहे.\n• **फायदे:** दातदुखी लगेच थांबते आणि तुमचा नैसर्गिक दात सुरक्षित राहतो.\n\nडॉ. अंकिता गोकलानी (M.D.S) यांच्याशी जवाहर कॉलनी, छत्रपती संभाजीनगर येथील क्लिनिकमध्ये सल्ल्यासाठी **९९२२३००८४२** वर संपर्क साधा किंवा ऑनलाईन अपॉइंटमेंट बुक करा!`;
+      return `**नमस्ते! डॉ. अंकिता गोकलानीज् एलाईट डेंटल केअरमध्ये आपले सहर्ष स्वागत आहे.**\n\nमी डॉ. अंकिता गोकलानी यांची एआय असिस्टंट आहे. दातांचे दुखणे, रूट कॅनाल, इम्प्लांट, दात साफ करणे, लहान मुलांचे दात किंवा अपॉइंटमेंटबद्दल मी तुम्हाला मदत करू शकते.\n\nतुम्हाला काय अडचण आहे ते सांगा किंवा **९९२२३००८४२** वर कॉल करा!`;
     }
-    return `**Root Canal Treatment (RCT) Information:**\n\n• **Is RCT Painful?** No! With modern local anesthesia, Root Canal Treatment is virtually painless and provides immediate relief from severe tooth pain.\n• **Why is it done?** RCT cleans and disinfects the interior pulp of a deeply decayed tooth, preserving your natural tooth structure so you don't need an extraction.\n• **Procedure:** The infection is removed, the root canal is sealed, and a protective custom crown is placed.\n\nTo schedule a personal consultation with Dr. Ankita Goklani (M.D.S), call **9922300842** or book an appointment online!`;
+    return `**Hello and welcome to Dr. Ankita Goklani's Elite Dental Care!**\n\nI am Dr. Ankita's AI Dental Assistant. How can I assist you with your dental health today?\n\nYou can ask me about Toothache Relief, Root Canal (RCT), Dental Implants, Teeth Whitening, Braces, Clinic Timings, or Booking an Appointment!`;
   }
 
-  // 2. Dental Implants
-  if (query.includes("implant") || query.includes("इम्प्लांट") || query.includes("missing tooth") || query.includes("दात बसवणे")) {
+  // 1. Toothache / Pain / Emergency
+  if (query.includes("pain") || query.includes("toothache") || query.includes("ache") || query.includes("hurt") || query.includes("swell") || query.includes("दुखणे") || query.includes("सुज") || query.includes("कळ") || query.includes("वेदना")) {
     if (isMarathi) {
-      return `**इम्प्लांट पद्धतीने दात बसवणे (Dental Implants):**\n\n• **काय आहे इम्प्लांट?** इम्प्लांट हा पडलेल्या किंवा काढलेल्या दातांच्या जागी नैसर्गिक दातासारखाच मजबूत दात बसवण्याचा सर्वात आधुनिक आणि कायमस्वरूपी उपाय आहे.\n• **फायदे:**\n  1. नैसर्गिक दातांसारखीच आकर्षक दिसणारी रचना व मजबुती.\n  2. शेजारच्या चांगल्या दातांना घासण्याची किंवा त्रास देण्याची गरज नाही.\n  3. जबड्याच्या हाडाची झीज रोखली जाते.\n  4. योग्य काळजी घेतल्यास आयुष्यभर टिकतात.\n\nडॉ. अंकिता गोकलानी (M.D.S, Ex-Asst. Professor Ghati Hospital) यांच्याकडे इम्प्लांट सल्ल्यासाठी **९९२२३००८४२** वर संपर्क साधा!`;
+      return `**दातदुखी किंवा सुज आल्यास तातडीचे मार्गदर्शन:**\n\n• **तात्पुरता दिलासा:** कोमट पाण्यात थोडे मीठ घालून गुळण्या करा. दुखणाऱ्या दातावर दाब देऊ नका.\n• **काय करू नये:** दुखणाऱ्या दातावर थेट पेनकिलर गोळी किंवा बाम ठेवू नका, यामुळे हिरडीला दुखापत होऊ शकते.\n• **उपचार:** दातामध्ये कीड खोलवर गेल्याने किंवा संसर्गामुळे दुखणे होते. यासाठी डिजिटल एक्स-रे काढून रूट कॅनाल (RCT) किंवा फिलींगची गरज असू शकते.\n\nतात्काळ तपासणीसाठी डॉ. अंकिता गोकलानी (M.D.S) यांच्याशी **९९२२३००८४२** वर संपर्क साधा किंवा क्लिनिकला भेट द्या!`;
     }
-    return `**Benefits of Dental Implants:**\n\nDental implants are the gold standard for replacing missing teeth. They consist of bio-compatible titanium posts inserted into the jawbone, topped with custom porcelain crowns.\n\n• **Key Advantages:**\n  1. **Feels & Looks Natural:** Functions just like your real teeth for chewing and speaking.\n  2. **Bone Preservation:** Stimulates and preserves natural jawbone density.\n  3. **Protects Adjacent Teeth:** Unlike dental bridges, neighboring healthy teeth remain untouched.\n  4. **Long-Term Longevity:** Built to last a lifetime with standard brushing and flossing.\n\nFor an implant assessment with Dr. Ankita Goklani (M.D.S), call **9922300842** or book an appointment today!`;
+    return `**Toothache & Pain Management Advice:**\n\n• **Immediate Relief:** Rinse your mouth gently with warm salt water. Avoid chewing on the painful side.\n• **Important Warning:** Do not place aspirin or painkiller tablets directly against the aching tooth or gum, as it can cause tissue burns.\n• **Root Cause & Treatment:** Severe pain usually indicates deep decay or pulp infection. Dr. Ankita Goklani can evaluate with a quick digital X-ray and perform a painless Root Canal or Filling.\n\nFor urgent attention, please call our clinic helpline directly at **9922300842** or book an immediate appointment slot!`;
   }
 
-  // 3. Timings, Address & Clinic Info
-  if (query.includes("timing") || query.includes("hours") || query.includes("address") || query.includes("location") || query.includes("कधी") || query.includes("पत्ता") || query.includes("वेळ")) {
+  // 2. Root Canal Treatment (RCT)
+  if (query.includes("rct") || query.includes("root canal") || query.includes("कॅनाल") || query.includes("रूट")) {
     if (isMarathi) {
-      return `**डॉ. अंकिता गोकलानीज् एलाईट डेंटल केअर (दातांचा दवाखाना):**\n\n• **पत्ता:** ७१/ए, डॉ. एस. एस. नथानीज् सनी क्लिनिक, न्यू शांतीनिकेतन कॉलनी, जवाहर कॉलनी, छत्रपती संभाजीनगर.\n• **सकाळची वेळ:** १०:०० ते दुपारी २:००\n• **संध्याकाळची वेळ:** ५:०० ते रात्री ९:००\n• **रविवार:** पूर्वसंध्येने अपॉइंटमेंटनुसार\n• **फोन क्रमांक:** ९९२२३००८४२\n\nतुम्ही या वेबसाईटवरून थेट अपॉइंटमेंट बुक करू शकता!`;
+      return `**रूट कॅनाल ट्रिटमेंट (RCT) ची सविस्तर माहिती:**\n\n• **वेदना होतात का?** अजिबात नाही! आधुनिक लोकल ॲनेस्थेशियामुळे उपचार पूर्णपणे त्रासमुक्त आणि सुखकर होतो.\n• **हा उपचार का केला जातो?** किडलेला किंवा संसर्ग झालेला दात काढण्याऐवजी तो कायमचा वाचवण्यासाठी RCT सर्वोत्तम उपाय आहे.\n• **फायदे:** दातदुखी लगेच थांबते आणि तुमचा नैसर्गिक दात सुरक्षित राहतो.\n• **सिटिंग्स:** बहुतांश केसेसमध्ये सिंगल सिटिंग किंवा २ टप्प्यांत उपचार पूर्ण होतो.\n\nडॉ. अंकिता गोकलानी (M.D.S) यांच्याशी जवाहर कॉलनी, छत्रपती संभाजीनगर येथील क्लिनिकमध्ये सल्ल्यासाठी **९९२२३००८४२** वर संपर्क साधा!`;
     }
-    return `**Dr. Ankita Goklani's Elite Dental Care Details:**\n\n• **Address:** 71/A, C/O Dr. S.S. Nathani's Sunny Clinic, New Shantiniketan Colony, Jawahar Colony, Chhatrapati Sambhajinagar.\n• **Morning Session:** 10:00 AM to 2:00 PM\n• **Evening Session:** 5:00 PM to 9:00 PM\n• **Sunday:** On Appointment Basis\n• **Direct Helpline:** 9922300842\n\nYou can book an appointment slot directly through this website!`;
+    return `**Root Canal Treatment (RCT) Details:**\n\n• **Is RCT Painful?** No! With modern local anesthesia, Root Canal Treatment is virtually painless and provides instant relief from severe tooth pain.\n• **Why is it done?** RCT cleans and disinfects the interior pulp of a deeply decayed tooth, preserving your natural tooth so extraction is avoided.\n• **Process:** The infection is cleaned out, sealed, and protected with a durable tooth crown.\n\nTo schedule a consultation with Dr. Ankita Goklani (M.D.S), call **9922300842** or book an appointment online!`;
   }
 
-  // 4. Children / Pediatric Dental Care
-  if (query.includes("child") || query.includes("kid") || query.includes("pediatric") || query.includes("मुले") || query.includes("बाळ")) {
+  // 3. Dental Implants / Missing Teeth
+  if (query.includes("implant") || query.includes("इम्प्लांट") || query.includes("missing") || query.includes("नात बसवणे") || query.includes("दात बसवणे")) {
     if (isMarathi) {
-      return `**लहान मुलांचे दंत उपचार (Pediatric Dentistry):**\n\nहोय, डॉ. अंकिता गोकलानी मुलांसाठी अत्यंत काळजीपूर्वक व स्नेहाळ दंत उपचार पुरवतात:\n\n• लहान मुलांच्या दातांच्या किडीवर उपचार व फिलींग.\n• किड रोखण्यासाठी फ्लुओराइड वार्निश (Fluoride Coating).\n• दुधाच्या दातांचे रक्षण व ओरल हायजीन मार्गदर्शन.\n\nक्लिनिकमध्ये संपर्क साधण्यासाठी **९९२२३००८४२** वर कॉल करा!`;
+      return `**इम्प्लांट पद्धतीने दात बसवणे (Dental Implants):**\n\n• **काय आहे इम्प्लांट?** इम्प्लांट हा पडलेल्या किंवा काढलेल्या दातांच्या जागी नैसर्गिक दातासारखाच मजबूत दात बसवण्याचा कायमस्वरूपी उपाय आहे.\n• **फायदे:**\n  1. नैसर्गिक दातांसारखीच मजबुती आणि देखावा.\n  2. शेजारच्या चांगल्या दातांना कोणतीही इजा न करता उपचार.\n  3. जबड्याच्या हाडाची झीज रोखली जाते.\n  4. योग्य काळजी घेतल्यास आयुष्यभर टिकतात.\n\nडॉ. अंकिता गोकलानी (M.D.S, Ex-Asst. Professor Ghati Hospital) यांच्याकडे इम्प्लांट सल्ल्यासाठी **९९२२३००८४२** वर संपर्क साधा!`;
     }
-    return `**Pediatric & Child Dental Care:**\n\nYes! Dr. Ankita Goklani provides gentle, child-friendly dental care in a stress-free environment:\n\n• **Preventive Protection:** Cavity-preventing Fluoride Varnish & Sealants.\n• **Tooth Restoration:** Painless tooth-colored fillings for milk teeth.\n• **Habit Correction:** Guidance and appliances for thumb-sucking or tongue thrusting.\n\nBook a visit for your child or call **9922300842**!`;
+    return `**Benefits of Dental Implants:**\n\nDental implants are the gold standard for replacing missing teeth. They consist of bio-compatible titanium posts inserted into the jawbone, topped with custom crowns.\n\n• **Key Advantages:**\n  1. **Feels & Looks Natural:** Restores full chewing strength.\n  2. **Protects Adjacent Teeth:** Healthy neighboring teeth stay untouched.\n  3. **Prevents Bone Loss:** Keeps jaw structure firm and youthful.\n\nFor an implant assessment with Dr. Ankita Goklani (M.D.S), call **9922300842** or book an appointment today!`;
   }
 
-  // 5. Braces / Aligners / Orthodontics
-  if (query.includes("brace") || query.includes("aligner") || query.includes("straight") || query.includes("वेडेवाकडे") || query.includes("तार")) {
+  // 4. Cleaning, Scaling, Whitening, Stains
+  if (query.includes("clean") || query.includes("scale") || query.includes("scaling") || query.includes("whiten") || query.includes("stain") || query.includes("yellow") || query.includes("साफ") || query.includes("पांढरे") || query.includes("पिवळे") || query.includes("किटण")) {
     if (isMarathi) {
-      return `**वेडेवाकडे व पुढे असलेले दात सरळ करणे (Orthodontic Braces & Aligners):**\n\n• **उपलब्ध पर्याय:** मेटल ब्रेसेस, सेरामिक ब्रेसेस आणि इनव्हिजिबल अलाईनर्स (Invisalign).\n• **फायदे:** दातांची रचना सुंदर होते, हसू आकर्षक बनते आणि अन्न चावणे सोपे होते.\n\nअधिक माहितीसाठी क्लिनिकमध्ये **९९२२३००८४२** वर संपर्क साधा!`;
+      return `**दात साफ करणे व पॉलिशिंग (Scaling & Whitening):**\n\n• **दात साफ केल्याने दात सैल होतात का?** हा एक गैरसमज आहे! अल्ट्रासोनिक क्लिनिंगने दातांवरील किटण आणि प्लेक निघून हिरड्या मजबूत होतात.\n• **फायदे:** तोंडाचा वास दूर होतो, हिरड्यांमधून रक्त येणे थांबते आणि दात स्वच्छ व चमकदार दिसतात.\n• **कालावधी:** दर ६ महिन्यांनी एकदा प्रोफेशनल क्लिनिंग करून घेणे ओरल हायजीनसाठी उत्तम मानले जाते.\n\nअधिक माहितीसाठी डॉ. अंकिता गोकलानी यांच्याशी **९९२२३००८४२** वर संपर्क साधा!`;
     }
-    return `**Teeth Straightening & Alignment (Braces & Clear Aligners):**\n\nWe offer modern orthodontic solutions to correct crooked, crowded, or protruding teeth:\n\n• Metal Braces, Ceramic Tooth-Colored Braces, and Clear Invisible Aligners.\n• Improves smile aesthetics, bite alignment, and overall oral health.\n\nSchedule a consultation with Dr. Ankita Goklani at **9922300842**!`;
+    return `**Teeth Cleaning, Scaling & Whitening:**\n\n• **Does Scaling weaken teeth?** Not at all! Ultrasonic scaling removes harmful tartar and bacterial plaque without damaging enamel.\n• **Benefits:** Eliminates bad breath, prevents gum bleeding, and brightens your smile.\n• **Frequency:** Dentists recommend professional cleaning once every 6 months for optimal oral health.\n\nSchedule a painless ultrasonic cleaning session with Dr. Ankita Goklani by calling **9922300842**!`;
+  }
+
+  // 5. Cavity / Decay / Fillings
+  if (query.includes("cavity") || query.includes("decay") || query.includes("fill") || query.includes("hole") || query.includes("black") || query.includes("किड") || query.includes("भरणे") || query.includes("खड्डा")) {
+    if (isMarathi) {
+      return `**दात किडणे व दातांची फिलींग (Tooth-Colored Fillings):**\n\n• **उपचार:** दातातील लहान किंवा मध्यम कीड वेळेवर काढून दाताच्या रंगाच्या कॉम्पोझिट (Composite) फिलींगने दात पूर्ववत केला जातो.\n• **फायदे:** फिलींग अजिबात दिसून येत नाही आणि कीड खोलवर जाऊन रूट कॅनालची वेळ येत नाही.\n\nतुमच्या दातांची आजच मोफत तपासणी सल्ल्यासाठी **९९२२३००८४२** वर कॉल करा!`;
+    }
+    return `**Tooth Decay & Invisible Tooth-Colored Fillings:**\n\n• **Treatment:** Early cavities are cleaned out and restored with high-grade tooth-colored composite resin.\n• **Advantages:** Seamless cosmetic match with natural teeth, restoring strength and preventing deep decay that leads to root canals.\n\nBook a dental checkup with Dr. Ankita Goklani today at **9922300842**!`;
+  }
+
+  // 6. Wisdom Tooth / Extractions
+  if (query.includes("wisdom") || query.includes("extract") || query.includes("remove") || query.includes("pull") || query.includes("अक्कल") || query.includes("काढणे")) {
+    if (isMarathi) {
+      return `**अक्कल दाढ व दात काढण्याचे उपचार (Painless Extractions):**\n\n• **अक्कल दाढ का दुखते?** जेव्हा अक्कल दाढ जागेभावी तिरपी येते किंवा हिरडीत अडकते, तेव्हा तीव्र वेदना व सुज येते.\n• **उपचार:** डॉ. अंकिता गोकलानी (Oral Physician Specialist) यांच्याद्वारे सौम्य व त्रासमुक्त पद्धतीने दात काढला जातो.\n\nसल्ल्यासाठी **९९२२३००८४२** वर कॉल करा किंवा क्लिनिकला भेट द्या!`;
+    }
+    return `**Wisdom Tooth Pain & Gentle Extractions:**\n\n• **Why Wisdom Teeth Hurt:** Impacted or misaligned wisdom teeth cause pressure, gum swelling, and localized pain.\n• **Expert Care:** Dr. Ankita Goklani specializes in gentle, painless extractions using localized numbing for maximum patient comfort.\n\nSchedule an evaluation by calling **9922300842**!`;
+  }
+
+  // 7. Braces / Aligners / Straightening
+  if (query.includes("brace") || query.includes("aligner") || query.includes("straight") || query.includes("invisalign") || query.includes("वेडेवाकडे") || query.includes("तार")) {
+    if (isMarathi) {
+      return `**वेडेवाकडे दात सरळ करणे (Braces & Clear Aligners):**\n\n• **उपलब्ध पर्याय:** मेटल ब्रेसेस, सेरामिक ब्रेसेस आणि इनव्हिजिबल अलाईनर्स (Invisalign).\n• **फायदे:** दातांची रचना सुंदर होते, हसू आकर्षक बनते आणि अन्न चावणे सोपे होते.\n\nअधिक माहितीसाठी क्लिनिकमध्ये **९९२२३००८४२** वर संपर्क साधा!`;
+    }
+    return `**Teeth Alignment (Braces & Clear Aligners):**\n\nWe offer modern orthodontic solutions to correct crooked, crowded, or protruding teeth:\n\n• **Options:** Traditional Metal Braces, Tooth-Colored Ceramic Braces, and Invisible Clear Aligners.\n• **Benefits:** Improves bite alignment, facial profile, and smile confidence.\n\nSchedule a consultation with Dr. Ankita Goklani at **9922300842**!`;
+  }
+
+  // 8. Bleeding Gums / Bad Breath / Pyorrhea
+  if (query.includes("gum") || query.includes("bleed") || query.includes("smell") || query.includes("breath") || query.includes("pyorrhea") || query.includes("रक्त") || query.includes("वास") || query.includes("पायरीया")) {
+    if (isMarathi) {
+      return `**हिरड्यांमधून रक्त येणे व तोंडाचा वास (Gum Care & Pyorrhea):**\n\n• **कारण:** दातांवर साचलेला पिवळा थर (Plaque/Tartar) हिरड्यांना संसर्ग पोहोचवतो.\n• **उपचार:** प्रोफेशनल स्केलिंग आणि गम्स मसाज जेलने हिरड्या निरोगी होतात.\n\nडॉ. अंकिता गोकलानी यांच्याशी **९९२२३००८४२** वर संपर्क साधा!`;
+    }
+    return `**Bleeding Gums & Bad Breath Treatment:**\n\n• **Cause:** Plaque and tartar accumulation along the gumline irritate gum tissues, causing bleeding and mouth odor.\n• **Solution:** Ultrasonic scaling and specialized antiseptic rinses restore firm, healthy gums.\n\nContact Dr. Ankita Goklani at **9922300842** for a gum checkup!`;
+  }
+
+  // 9. Sensitivity / Cold / Hot
+  if (query.includes("sensit") || query.includes("cold") || query.includes("hot") || query.includes("sweet") || query.includes("शिणशिण") || query.includes("थंड") || query.includes("गरम")) {
+    if (isMarathi) {
+      return `**दात शिणशिणणे (Dental Sensitivity):**\n\n• **कारण:** दातांचे बाहेरील एनेमल आवरण झिजल्याने थंड किंवा गरम खाताना कळ मारते.\n• **उपचार:** डिसेंन्सिटायझिंग टूथपेस्ट, फ्लुओराइड अ‍ॅप्लिकेशन किंवा फिलींग द्वारे त्वरीत आराम मिळतो.\n\nसल्ल्यासाठी **९९२२३००८४२** वर संपर्क साधा!`;
+    }
+    return `**Tooth Sensitivity Management:**\n\n• **Causes:** Enamel wear, exposed dentin, or gum recession causing sharp zings with cold or hot foods.\n• **Solutions:** Desensitizing pastes, in-clinic fluoride varnishes, or restorative sealants.\n\nBook a visit with Dr. Ankita Goklani at **9922300842**!`;
+  }
+
+  // 10. Cost / Fees / Charges
+  if (query.includes("cost") || query.includes("fee") || query.includes("price") || query.includes("charge") || query.includes("rate") || query.includes("फी") || query.includes("खर्च") || query.includes("दर")) {
+    if (isMarathi) {
+      return `**उपचारांचे शुल्क व फी माहिती:**\n\nडॉ. अंकिता गोकलानीज् एलाईट डेंटल केअरमध्ये अत्यंत वाजवी आणि परवडणाऱ्या दरात उच्च दर्जाचे दंत उपचार पुरवले जातात.\n\n• प्रत्येक रुग्णाच्या दातांची स्थिती वेगळी असल्याने क्लिनिकमध्ये प्रत्यक्ष तपासणीनंतर अचूक अंदाज दिला जातो.\n• अपॉइंटमेंट बुक करण्यासाठी **९९२२३००८४२** वर कॉल करा!`;
+    }
+    return `**Treatment Fees & Cost Information:**\n\nDr. Ankita Goklani's Elite Dental Care provides high-quality, hygiene-focused dental treatments at fair and transparent prices.\n\n• Since treatment scope depends on individual clinical conditions, Dr. Ankita Goklani provides exact estimates after a brief examination.\n• Call **9922300842** or click "Book Appointment" to reserve a consultation slot!`;
+  }
+
+  // 11. Timings, Address, Location
+  if (query.includes("timing") || query.includes("hours") || query.includes("address") || query.includes("location") || query.includes("where") || query.includes("pincode") || query.includes("पत्ता") || query.includes("कुठे") || query.includes("वेळ")) {
+    if (isMarathi) {
+      return `**डॉ. अंकिता गोकलानीज् एलाईट डेंटल केअर:**\n\n• **पत्ता:** ७१/ए, डॉ. एस. एस. नथानीज् सनी क्लिनिक, न्यू शांतीनिकेतन कॉलनी, जवाहर कॉलनी, छत्रपती संभाजीनगर.\n• **सकाळची वेळ:** १०:०० ते दुपारी २:००\n• **संध्याकाळची वेळ:** ५:०० ते रात्री ९:००\n• **रविवार:** पूर्वसंध्येने अपॉइंटमेंटनुसार\n• **फोन क्रमांक:** ९९२२३००८४२`;
+    }
+    return `**Dr. Ankita Goklani's Elite Dental Care Details:**\n\n• **Address:** 71/A, C/O Dr. S.S. Nathani's Sunny Clinic, New Shantiniketan Colony, Jawahar Colony, Chhatrapati Sambhajinagar.\n• **Morning Session:** 10:00 AM to 2:00 PM\n• **Evening Session:** 5:00 PM to 9:00 PM\n• **Sunday:** On Appointment Basis\n• **Direct Helpline:** 9922300842`;
+  }
+
+  // 12. Doctor Background
+  if (query.includes("doctor") || query.includes("ankita") || query.includes("goklani") || query.includes("qualification") || query.includes("experience") || query.includes("डॉक्टर")) {
+    if (isMarathi) {
+      return `**डॉ. अंकिता अमर गोकलानी यांची माहिती:**\n\n• **पदवी:** B.D.S, M.D.S (Govt. Dental College & Hospital, Chh. Sambhaji Nagar).\n• **अनुभव:** माजी सहाय्यक प्राध्यापक (घाटी हॉस्पिटल, छत्रपती संभाजीनगर).\n• **विशेषज्ञता:** ओरल फिजिशियन व दंत शल्यचिकित्सक (Reg. No. A-29912).\n\nसल्ल्यासाठी **९९२२३००८४२** वर संपर्क साधा!`;
+    }
+    return `**About Dr. Ankita Amar Goklani:**\n\n• **Qualifications:** B.D.S (C.S.M.S.S Dental College), M.D.S (Govt. Dental College & Hospital, Chh. Sambhaji Nagar).\n• **Experience:** Ex-Assistant Professor at Ghati Hospital, Chhatrapati Sambhajinagar.\n• **Specialization:** Consultant Oral Physician & Dental Surgeon (Reg. No. A-29912).\n\nTo consult Dr. Ankita Goklani, call **9922300842**!`;
   }
 
   // Default General Guidance Response
   if (isMarathi) {
-    return `**डॉ. अंकिता गोकलानीज् एलाईट डेंटल केअर मध्ये आपले स्वागत आहे!**\n\nआमच्या क्लिनिकमध्ये खालील सर्व आधुनिक दंत उपचार उपलब्ध आहेत:\n• डिजिटल दंत एक्स-रे व दातांची फिलींग\n• वेदनाशामक रूट कॅनाल ट्रिटमेंट (RCT)\n• इम्प्लांट पद्धतीने व कायमस्वरूपी कृत्रिम दात बसवणे\n• लहान मुलांचे दंत उपचार व अक्कल दाढ काढणे\n\nडॉ. अंकिता गोकलानी (B.D.S, M.D.S - Ex-Asst. Professor, Ghati Hospital) यांच्या सल्ल्यासाठी **९९२२३००८४२** वर कॉल करा किंवा ऑनलाईन अपॉइंटमेंट बुक करा!`;
+    return `**डॉ. अंकिता गोकलानीज् एलाईट डेंटल केअर मध्ये आपले स्वागत आहे!**\n\nतुमच्या प्रश्नाबाबत आमचे क्लिनिक पूर्ण मार्गदर्शन पुरवते. आमच्याकडे खालील सर्व आधुनिक दंत उपचार उपलब्ध आहेत:\n• डिजिटल दंत एक्स-रे व दातांची कॉम्पोझिट फिलींग\n• वेदनाशामक रूट कॅनाल ट्रिटमेंट (RCT)\n• इम्प्लांट पद्धतीने व कायमस्वरूपी कृत्रिम दात बसवणे\n• लहान मुलांचे दंत उपचार व अक्कल दाढ काढणे\n\nडॉ. अंकिता गोकलानी (M.D.S) यांच्या सल्ल्यासाठी **९९२२३००८४२** वर कॉल करा किंवा ऑनलाईन अपॉइंटमेंट बुक करा!`;
   }
 
-  return `**Welcome to Dr. Ankita Goklani's Elite Dental Care!**\n\nWe offer comprehensive, modern, and hygiene-focused dental treatments in Jawahar Colony, Chhatrapati Sambhajinagar:\n\n• **Digital Dental X-Ray & Fillings:** Quick, low-radiation imaging and invisible composite fillings.\n• **Painless Root Canal (RCT):** Single-sitting infection treatment preserving natural teeth.\n• **Dental Implants & Crowns:** Permanent tooth replacement with high-strength zirconia/ceramic crowns.\n• **Pediatric & Braces Care:** Child-friendly dentistry and teeth alignment solutions.\n\nTo schedule a consultation with Dr. Ankita Goklani (M.D.S), please call **9922300842** or click "Book Appointment" above!`;
+  return `**Welcome to Dr. Ankita Goklani's Elite Dental Care!**\n\nRegarding your query, Dr. Ankita Goklani provides personalized consultation for all dental concerns in Jawahar Colony, Chhatrapati Sambhajinagar:\n\n• **Digital X-Rays & Tooth Fillings:** Quick diagnosis & aesthetic restorations.\n• **Painless Root Canal (RCT):** Single-sitting infection treatment preserving natural teeth.\n• **Dental Implants & Zirconia Crowns:** Permanent natural-looking tooth replacements.\n• **Pediatric Care & Braces:** Gentle child dentistry and alignment.\n\nTo consult Dr. Ankita Goklani (M.D.S), please call **9922300842** or click "Book Appointment" above!`;
 }
 
 // API Routes
@@ -253,7 +317,7 @@ Your guidelines:
         promptContext += `Patient: ${message}\nAssistant:`;
 
         const response = await ai.models.generateContent({
-          model: "gemini-3.6-flash",
+          model: "gemini-2.5-flash",
           contents: promptContext,
           config: {
             systemInstruction,

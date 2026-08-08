@@ -53,7 +53,21 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
 
   const getClientFallback = (query: string): string => {
     const q = query.toLowerCase();
-    const isMarathi = /[\u0900-\u097F]/.test(query) || q.includes("marathi") || q.includes("कधी") || q.includes("काय") || q.includes("माहिती");
+    const isMarathi = /[\u0900-\u097F]/.test(query) || q.includes("marathi") || q.includes("कधी") || q.includes("काय") || q.includes("माहिती") || q.includes("नाही") || q.includes("आहे");
+
+    // Greetings
+    if (q.match(/^(hi|hello|hey|namaste|greetings|नमस्ते|नमस्कार)/i)) {
+      return isMarathi
+        ? `**नमस्ते! डॉ. अंकिता गोकलानीज् एलाईट डेंटल केअरमध्ये आपले सहर्ष स्वागत आहे.**\n\nमी डॉ. अंकिता गोकलानी यांची एआय असिस्टंट आहे. दातांचे दुखणे, रूट कॅनाल, इम्प्लांट, दात साफ करणे, लहान मुलांचे दात किंवा अपॉइंटमेंटबद्दल मी तुम्हाला मदत करू शकते.\n\nतुम्हाला काय अडचण आहे ते सांगा किंवा **९९२२३००८४२** वर कॉल करा!`
+        : `**Hello and welcome to Dr. Ankita Goklani's Elite Dental Care!**\n\nI am Dr. Ankita's AI Dental Assistant. How can I assist you with your dental health today?\n\nYou can ask me about Toothache Relief, Root Canal (RCT), Dental Implants, Teeth Whitening, Braces, Clinic Timings, or Booking an Appointment!`;
+    }
+
+    // Toothache / Pain / Emergency
+    if (q.includes("pain") || q.includes("toothache") || q.includes("ache") || q.includes("hurt") || q.includes("swell") || q.includes("दुखणे") || q.includes("सुज") || q.includes("कळ") || q.includes("वेदना")) {
+      return isMarathi 
+        ? `**दातदुखी किंवा सुज आल्यास तातडीचे मार्गदर्शन:**\n\n• **तात्पुरता दिलासा:** कोमट पाण्यात थोडे मीठ घालून गुळण्या करा. दुखणाऱ्या दातावर दाब देऊ नका.\n• **काय करू नये:** दुखणाऱ्या दातावर थेट पेनकिलर गोळी किंवा बाम ठेवू नका, यामुळे हिरडीला दुखापत होऊ शकते.\n• **उपचार:** दातामध्ये कीड खोलवर गेल्याने किंवा संसर्गामुळे दुखणे होते. यासाठी डिजिटल एक्स-रे काढून रूट कॅनाल (RCT) किंवा फिलींगची गरज असू शकते.\n\nतात्काळ तपासणीसाठी डॉ. अंकिता गोकलानी (M.D.S) यांच्याशी **९९२२३००८४२** वर संपर्क साधा किंवा क्लिनिकला भेट द्या!`
+        : `**Toothache & Pain Management Advice:**\n\n• **Immediate Relief:** Rinse your mouth gently with warm salt water. Avoid chewing on the painful side.\n• **Important Warning:** Do not place aspirin or painkiller tablets directly against the aching tooth or gum, as it can cause tissue burns.\n• **Root Cause & Treatment:** Severe pain usually indicates deep decay or pulp infection. Dr. Ankita Goklani can evaluate with a quick digital X-ray and perform a painless Root Canal or Filling.\n\nFor urgent attention, please call our clinic helpline directly at **9922300842** or book an immediate appointment slot!`;
+    }
 
     if (q.includes("rct") || q.includes("root canal") || q.includes("कॅनाल") || q.includes("रूट") || q.includes("painful") || q.includes("वेदना")) {
       return isMarathi 
