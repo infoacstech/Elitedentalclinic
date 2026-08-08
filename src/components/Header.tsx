@@ -77,13 +77,12 @@ export const Header: React.FC<HeaderProps> = ({
           id="brand-logo-link"
           aria-label="Dr. Ankita Goklani's Elite Dental Care - Home"
         >
-          {/* Custom Stylized Logo */}
-          <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-teal-500 to-sky-600 text-white shadow-md group-hover:scale-105 transition-transform shrink-0">
-            <Sparkles className="w-5 h-5 text-white" aria-hidden="true" />
-            <div className="absolute -bottom-1 -right-1 bg-rose-600 text-[8px] font-extrabold px-1 py-0.2 rounded-full text-white border border-white shadow-xs">
-              ELITE
-            </div>
-          </div>
+          {/* Official Clinic Logo */}
+          <img 
+            src="/logo.svg" 
+            alt="Dr. Ankita Goklani's Elite Dental Care Logo" 
+            className="w-10 h-10 sm:w-11 sm:h-11 object-contain drop-shadow-sm group-hover:scale-105 transition-transform shrink-0" 
+          />
 
           {/* Text block */}
           <div className="flex flex-col justify-center whitespace-nowrap">

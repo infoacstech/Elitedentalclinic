@@ -64,9 +64,7 @@ export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({ currentLang 
     <div className="fixed top-12 left-2 right-2 sm:left-auto sm:right-4 sm:top-16 z-50 max-w-sm bg-slate-900/95 text-white p-3.5 rounded-2xl border border-teal-500/40 shadow-2xl backdrop-blur-md animate-in slide-in-from-top-4 duration-300">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-sky-600 flex items-center justify-center shrink-0 shadow-md">
-            <Smartphone className="w-5 h-5 text-white" aria-hidden="true" />
-          </div>
+          <img src="/logo.svg" alt="App Icon" className="w-10 h-10 object-contain p-0.5 rounded-xl bg-white shrink-0 shadow-md" />
           <div>
             <h4 className="text-xs font-bold text-teal-300">
               {currentLang === 'en' ? "Install Elite Dental App" : "ॲप इन्स्टॉल करा"}
