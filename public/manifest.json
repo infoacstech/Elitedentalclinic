@@ -1,0 +1,26 @@
+{
+  "name": "Dr. Ankita Goklani's Elite Dental Care",
+  "short_name": "Elite Dental",
+  "description": "Premier dental clinic in Jawahar Colony, Chhatrapati Sambhajinagar. Book appointments and consult AI.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0d9488",
+  "orientation": "portrait",
+  "categories": ["medical", "health", "lifestyle"],
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -92,10 +92,13 @@ export const EmergencyDentalCard: React.FC<EmergencyDentalCardProps> = ({
             <button
               id="btn-toggle-emergency-card"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-xs font-bold text-rose-200 hover:text-white bg-rose-900/40 hover:bg-rose-900/70 px-3 py-1.5 rounded-xl border border-rose-500/30 transition-colors flex items-center gap-1"
+              aria-expanded={isExpanded}
+              aria-controls="emergency-details-content"
+              aria-label={isExpanded ? "Collapse emergency steps" : "Expand emergency steps"}
+              className="text-xs font-bold text-rose-200 hover:text-white bg-rose-900/40 hover:bg-rose-900/70 px-3 py-1.5 rounded-xl border border-rose-500/30 focus-visible:ring-2 focus-visible:ring-rose-400 transition-colors flex items-center gap-1"
             >
               <span>{isExpanded ? (currentLang === 'en' ? "Collapse" : "लपवा") : (currentLang === 'en' ? "Expand Steps" : "पहा")}</span>
-              {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              {isExpanded ? <ChevronUp className="w-4 h-4" aria-hidden="true" /> : <ChevronDown className="w-4 h-4" aria-hidden="true" />}
             </button>
           </div>
 
@@ -103,13 +106,13 @@ export const EmergencyDentalCard: React.FC<EmergencyDentalCardProps> = ({
 
         {/* Expandable Emergency Details */}
         {isExpanded && (
-          <div className="mt-6 space-y-6 animate-in fade-in duration-300">
+          <div id="emergency-details-content" className="mt-6 space-y-6 animate-in fade-in duration-300">
             
             {/* Quick Urgent Hotline Bar */}
             <div className="bg-rose-950/80 border border-rose-500/50 p-4 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 shadow-inner">
               <div className="space-y-1 text-center md:text-left">
                 <p className="text-xs font-bold text-rose-300 uppercase tracking-wider flex items-center justify-center md:justify-start gap-1.5">
-                  <HeartPulse className="w-4 h-4 text-rose-400" />
+                  <HeartPulse className="w-4 h-4 text-rose-400" aria-hidden="true" />
                   <span>{currentLang === 'en' ? "Direct Emergency Helpline" : "तातडीचा संपर्क क्रमांक"}</span>
                 </p>
                 <p className="text-sm sm:text-base font-extrabold text-white">
@@ -123,9 +126,10 @@ export const EmergencyDentalCard: React.FC<EmergencyDentalCardProps> = ({
                 <a
                   id="btn-emergency-call-direct"
                   href="tel:9922300842"
-                  className="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 border border-rose-400/40 transition-transform active:scale-95"
+                  aria-label="Call emergency hotline at 9922300842"
+                  className="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 border border-rose-400/40 focus-visible:ring-2 focus-visible:ring-rose-400 transition-transform active:scale-95"
                 >
-                  <Phone className="w-4 h-4" />
+                  <Phone className="w-4 h-4" aria-hidden="true" />
                   <span>{currentLang === 'en' ? "Call 9922300842" : "९९२२३००८४२ वर कॉल करा"}</span>
                 </a>
 

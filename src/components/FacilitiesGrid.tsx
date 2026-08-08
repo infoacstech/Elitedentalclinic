@@ -64,58 +64,70 @@ export const FacilitiesGrid: React.FC<FacilitiesGridProps> = ({ currentLang, onB
         {/* Filter Bar & Search */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8 bg-slate-50 p-3 rounded-2xl border border-slate-200">
           {/* Category Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Filter treatment categories">
             <button
               id="filter-cat-all"
               onClick={() => setSelectedCategory('all')}
+              aria-label="Show all categories"
+              aria-pressed={selectedCategory === 'all'}
               className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
                 selectedCategory === 'all' ? 'bg-teal-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200/60'
-              }`}
+              } focus-visible:ring-2 focus-visible:ring-teal-600`}
             >
               {t.allCategories}
             </button>
             <button
               id="filter-cat-preventive"
               onClick={() => setSelectedCategory('preventive')}
+              aria-label="Show preventive treatments"
+              aria-pressed={selectedCategory === 'preventive'}
               className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
                 selectedCategory === 'preventive' ? 'bg-teal-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200/60'
-              }`}
+              } focus-visible:ring-2 focus-visible:ring-teal-600`}
             >
               {t.preventive}
             </button>
             <button
               id="filter-cat-restorative"
               onClick={() => setSelectedCategory('restorative')}
+              aria-label="Show restorative treatments"
+              aria-pressed={selectedCategory === 'restorative'}
               className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
                 selectedCategory === 'restorative' ? 'bg-teal-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200/60'
-              }`}
+              } focus-visible:ring-2 focus-visible:ring-teal-600`}
             >
               {t.restorative}
             </button>
             <button
               id="filter-cat-surgical"
               onClick={() => setSelectedCategory('surgical')}
+              aria-label="Show surgical treatments"
+              aria-pressed={selectedCategory === 'surgical'}
               className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
                 selectedCategory === 'surgical' ? 'bg-teal-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200/60'
-              }`}
+              } focus-visible:ring-2 focus-visible:ring-teal-600`}
             >
               {t.surgical}
             </button>
             <button
               id="filter-cat-cosmetic"
               onClick={() => setSelectedCategory('cosmetic')}
+              aria-label="Show cosmetic treatments"
+              aria-pressed={selectedCategory === 'cosmetic'}
               className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
                 selectedCategory === 'cosmetic' ? 'bg-teal-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200/60'
-              }`}
+              } focus-visible:ring-2 focus-visible:ring-teal-600`}
             >
               {t.cosmetic}
             </button>
             <button
               id="filter-cat-pediatric"
               onClick={() => setSelectedCategory('pediatric')}
+              aria-label="Show pediatric treatments"
+              aria-pressed={selectedCategory === 'pediatric'}
               className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
                 selectedCategory === 'pediatric' ? 'bg-teal-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200/60'
-              }`}
+              } focus-visible:ring-2 focus-visible:ring-teal-600`}
             >
               {t.pediatric}
             </button>
@@ -123,10 +135,11 @@ export const FacilitiesGrid: React.FC<FacilitiesGridProps> = ({ currentLang, onB
 
           {/* Search Field */}
           <div className="relative w-full sm:w-64">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" aria-hidden="true" />
             <input
               id="input-facility-search"
               type="text"
+              aria-label={t.searchFacilities}
               placeholder={t.searchFacilities}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

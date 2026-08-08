@@ -14,6 +14,7 @@ import { MobileActionBar } from './components/MobileActionBar';
 import { EmergencyDentalCard } from './components/EmergencyDentalCard';
 import { ToastContainer, ToastMessage } from './components/Toast';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
+import { PWAInstallPrompt } from './components/PWAInstallPrompt';
 
 export default function App() {
   const [currentLang, setCurrentLang] = useState<Language>('en');
@@ -89,6 +90,9 @@ export default function App() {
     <div className="min-h-screen bg-white text-slate-900 font-sans antialiased pb-16 md:pb-0 selection:bg-teal-500 selection:text-white">
       {/* Scroll Progress Bar */}
       <ScrollProgressBar />
+
+      {/* PWA Install Banner */}
+      <PWAInstallPrompt currentLang={currentLang} />
       
       {/* Sticky Header */}
       <Header

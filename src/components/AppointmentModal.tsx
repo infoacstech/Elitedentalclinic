@@ -109,15 +109,21 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-xs overflow-y-auto">
-      <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl my-8 border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
+      <div 
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="appointment-modal-title"
+        className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl my-8 border border-slate-200 animate-in fade-in zoom-in-95 duration-200"
+      >
         
         {/* Close Button */}
         <button
           id="btn-close-appointment-modal"
           onClick={handleReset}
-          className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+          aria-label="Close appointment modal"
+          className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-teal-600 transition-colors"
         >
-          <X className="w-5 h-5" />
+          <X className="w-5 h-5" aria-hidden="true" />
         </button>
 
         {!successResult ? (
@@ -125,10 +131,10 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
             {/* Modal Header */}
             <div className="mb-6">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-800 text-xs font-bold uppercase tracking-wider mb-2">
-                <Calendar className="w-3.5 h-3.5 text-teal-600" />
+                <Calendar className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
                 <span>Dr. Ankita Goklani's Elite Dental Care</span>
               </div>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+              <h3 id="appointment-modal-title" className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
                 {t.bookingModalTitle}
               </h3>
               <p className="text-xs text-slate-500 mt-1">

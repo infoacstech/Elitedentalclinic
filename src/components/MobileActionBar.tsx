@@ -18,16 +18,17 @@ export const MobileActionBar: React.FC<MobileActionBarProps> = ({ currentLang, o
   const whatsappUrl = `https://wa.me/919922300842?text=${waMessage}`;
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 p-2.5 px-4 shadow-2xl">
+    <nav aria-label="Mobile quick action bar" className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 p-2.5 px-4 shadow-2xl">
       <div className="flex items-center justify-between gap-2 max-w-md mx-auto">
         
         {/* Call Button */}
         <a
           id="btn-mobile-call"
           href="tel:9922300842"
-          className="flex-1 bg-slate-800 hover:bg-slate-700 text-sky-200 font-bold py-2.5 px-3 rounded-xl border border-slate-700 text-xs flex items-center justify-center gap-1.5 transition-colors"
+          aria-label="Call clinic at +91 9922300842"
+          className="flex-1 bg-slate-800 hover:bg-slate-700 text-sky-200 font-bold py-2.5 px-3 rounded-xl border border-slate-700 text-xs flex items-center justify-center gap-1.5 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 transition-colors"
         >
-          <Phone className="w-4 h-4 text-teal-400" />
+          <Phone className="w-4 h-4 text-teal-400" aria-hidden="true" />
           <span>Call</span>
         </a>
 
@@ -37,11 +38,12 @@ export const MobileActionBar: React.FC<MobileActionBarProps> = ({ currentLang, o
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Message clinic on WhatsApp"
           animate={{ scale: [1, 1.02, 1] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-          className="flex-1 bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+          className="flex-1 bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 transition-colors shadow-sm"
         >
-          <MessageSquare className="w-4 h-4" />
+          <MessageSquare className="w-4 h-4" aria-hidden="true" />
           <span>WhatsApp</span>
         </motion.a>
 
@@ -49,6 +51,7 @@ export const MobileActionBar: React.FC<MobileActionBarProps> = ({ currentLang, o
         <motion.button
           id="btn-mobile-book"
           onClick={onBookClick}
+          aria-label="Book an appointment online"
           animate={{
             scale: [1, 1.04, 1],
             boxShadow: [
@@ -58,13 +61,13 @@ export const MobileActionBar: React.FC<MobileActionBarProps> = ({ currentLang, o
             ]
           }}
           transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-          className="flex-1 bg-gradient-to-r from-teal-500 to-sky-600 hover:from-teal-600 hover:to-sky-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+          className="flex-1 bg-gradient-to-r from-teal-500 to-sky-600 hover:from-teal-600 hover:to-sky-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 transition-colors"
         >
-          <Calendar className="w-4 h-4" />
+          <Calendar className="w-4 h-4" aria-hidden="true" />
           <span>Book</span>
         </motion.button>
 
       </div>
-    </div>
+    </nav>
   );
 };

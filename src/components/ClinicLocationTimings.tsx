@@ -83,9 +83,10 @@ export const ClinicLocationTimings: React.FC<ClinicLocationTimingsProps> = ({
                       href={mapSearchUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-teal-600 hover:bg-teal-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-md flex items-center gap-1 shrink-0 transition-colors"
+                      aria-label="Get directions to clinic on Google Maps"
+                      className="bg-teal-600 hover:bg-teal-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-md flex items-center gap-1 shrink-0 focus-visible:ring-2 focus-visible:ring-teal-300 transition-colors"
                     >
-                      <Navigation className="w-3 h-3" />
+                      <Navigation className="w-3 h-3" aria-hidden="true" />
                       <span>{t.getDirections}</span>
                     </a>
                   </div>
@@ -95,9 +96,10 @@ export const ClinicLocationTimings: React.FC<ClinicLocationTimingsProps> = ({
                   <a
                     href="tel:9922300842"
                     id="btn-location-phone-link"
-                    className="flex items-center gap-2 text-white hover:text-teal-300 text-xs sm:text-sm font-bold bg-slate-700/80 hover:bg-slate-700 px-3 py-2 rounded-xl border border-slate-600 transition-colors"
+                    aria-label="Call clinic at 9922300842"
+                    className="flex items-center gap-2 text-white hover:text-teal-300 text-xs sm:text-sm font-bold bg-slate-700/80 hover:bg-slate-700 px-3 py-2 rounded-xl border border-slate-600 focus-visible:ring-2 focus-visible:ring-teal-400 transition-colors"
                   >
-                    <Phone className="w-4 h-4 text-teal-400" />
+                    <Phone className="w-4 h-4 text-teal-400" aria-hidden="true" />
                     <span>Call 9922300842</span>
                   </a>
 
@@ -106,9 +108,10 @@ export const ClinicLocationTimings: React.FC<ClinicLocationTimingsProps> = ({
                     href={mapSearchUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-sky-200 hover:text-white text-xs font-semibold px-3 py-2 rounded-xl bg-slate-700/40 hover:bg-slate-700/80 border border-slate-600 transition-colors"
+                    aria-label="Open Google Maps for clinic directions"
+                    className="flex items-center gap-1.5 text-sky-200 hover:text-white text-xs font-semibold px-3 py-2 rounded-xl bg-slate-700/40 hover:bg-slate-700/80 border border-slate-600 focus-visible:ring-2 focus-visible:ring-teal-400 transition-colors"
                   >
-                    <Navigation className="w-3.5 h-3.5 text-sky-400" />
+                    <Navigation className="w-3.5 h-3.5 text-sky-400" aria-hidden="true" />
                     <span>{t.getDirections} (Google Maps)</span>
                   </a>
                 </div>
