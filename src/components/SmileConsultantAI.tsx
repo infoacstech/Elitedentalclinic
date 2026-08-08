@@ -120,18 +120,32 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
     setLoading(true);
 
     try {
-      const res = await fetch('/api/dental-consult', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          conversationHistory: messages.map(m => ({ sender: m.sender, text: m.text }))
-        })
-      });
+      let replyText = '';
 
-      const data = await res.json();
+      try {
+        const res = await fetch('/api/dental-consult', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: text,
+            conversationHistory: messages.map(m => ({ sender: m.sender, text: m.text }))
+          })
+        });
 
-      const replyText = data?.reply || getClientFallback(text);
+        if (res.ok) {
+          const contentType = res.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            const data = await res.json();
+            replyText = data?.reply || '';
+          }
+        }
+      } catch (fetchErr) {
+        console.info('Backend API unavailable, using client-side AI fallback:', fetchErr);
+      }
+
+      if (!replyText) {
+        replyText = getClientFallback(text);
+      }
 
       const assistantMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
