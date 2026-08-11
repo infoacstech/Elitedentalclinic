@@ -24,7 +24,7 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="sticky top-0 z-40 bg-white shadow-sm border-b border-slate-100">
       {/* Top Utility Bar */}
       <div className="bg-sky-900 text-sky-100 text-xs py-1.5 px-3 sm:px-8">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+        <div className="max-w-[1536px] mx-auto flex items-center justify-between gap-2">
           {/* Left info */}
           <div className="flex items-center gap-3 sm:gap-6">
             <a 
@@ -69,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Main Brand Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-8 py-2.5 flex items-center justify-between gap-3 overflow-x-auto no-scrollbar">
+      <div className="max-w-[1536px] mx-auto px-3 sm:px-8 py-2.5 flex items-center justify-between gap-3 overflow-x-auto no-scrollbar">
         {/* Brand Logo & Title */}
         <a 
           href="#hero" 

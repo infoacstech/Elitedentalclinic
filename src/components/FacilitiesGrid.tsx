@@ -44,11 +44,11 @@ export const FacilitiesGrid: React.FC<FacilitiesGridProps> = ({ currentLang, onB
   });
 
   return (
-    <section id="facilities" className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+    <section id="facilities" className="py-12 bg-white">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-8">
         
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
+        <div className="text-center max-w-5xl mx-auto mb-10">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-sky-800 text-xs font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5 text-teal-600" />
             <span>* {t.availableFacilitiesHeader} *</span>
@@ -148,8 +148,8 @@ export const FacilitiesGrid: React.FC<FacilitiesGridProps> = ({ currentLang, onB
           </div>
         </div>
 
-        {/* Facilities Cards Grid (3 Columns) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Facilities Cards Grid (4 Columns on xl screens) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredFacilities.map((facility, index) => {
             const title = currentLang === 'en' ? facility.titleEn : facility.titleMr;
             const subtitle = currentLang === 'en' ? facility.titleMr : facility.titleEn;

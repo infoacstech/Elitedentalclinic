@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Calendar, Phone, Sparkles, Award, CheckCircle, ArrowRight, UserCheck } from 'lucide-react';
+import { ShieldCheck, Award, CheckCircle, ArrowRight, UserCheck, Sparkles } from 'lucide-react';
 import { Language } from '../types';
 import { translations } from '../data/translations';
 import { doctorDetails } from '../data/clinicData';
@@ -28,10 +28,10 @@ export const Hero: React.FC<HeroProps> = ({ currentLang, onBookClick, onAiConsul
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-900/40" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8">
+      <div className="relative z-10 max-w-[1536px] mx-auto px-4 sm:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
-          {/* Left Column (Left Third Negative Space for Clean Typography Overlay) */}
+          {/* Left Column */}
           <div className="lg:col-span-7 space-y-6">
             
             {/* Top Badge */}
@@ -65,70 +65,46 @@ export const Hero: React.FC<HeroProps> = ({ currentLang, onBookClick, onAiConsul
                 {currentLang === 'en' ? "Consultant Oral Physician & Dental Surgeon" : "कन्सल्टंट ओरल फिजिशियन आणि दंत शल्यचिकित्सक"}
               </p>
 
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl pt-2">
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed pt-2">
                 {t.heroTagline}
               </p>
             </div>
 
             {/* Doctor Credentials Pill List */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-xl text-xs text-slate-200">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs text-slate-200">
               <div className="flex items-center gap-2 bg-slate-800/80 p-2.5 rounded-lg border border-slate-700/60 backdrop-blur-xs">
                 <CheckCircle className="w-4 h-4 text-teal-400 shrink-0" />
-                <span>B.D.S (C.S.M.S.S Dental College)</span>
+                <span>B.D.S (C.S.M.S.S College)</span>
               </div>
               <div className="flex items-center gap-2 bg-slate-800/80 p-2.5 rounded-lg border border-slate-700/60 backdrop-blur-xs">
                 <CheckCircle className="w-4 h-4 text-teal-400 shrink-0" />
                 <span>M.D.S (GDC Sambhajinagar)</span>
               </div>
-              <div className="flex items-center gap-2 bg-slate-800/80 p-2.5 rounded-lg border border-slate-700/60 backdrop-blur-xs sm:col-span-2">
+              <div className="flex items-center gap-2 bg-slate-800/80 p-2.5 rounded-lg border border-slate-700/60 backdrop-blur-xs">
                 <Award className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>Ex-Asst. Professor (Ghati Hospital, Sambhajinagar)</span>
+                <span>Ex-Asst. Prof (Ghati Hospital)</span>
               </div>
             </div>
 
-            {/* Hero CTAs */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <button
-                id="btn-hero-book-appointment"
-                onClick={onBookClick}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-500 to-sky-600 hover:from-teal-600 hover:to-sky-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg hover:shadow-teal-500/25 transition-all transform hover:-translate-y-0.5 text-sm sm:text-base"
-              >
-                <Calendar className="w-5 h-5" />
-                <span>{t.bookAppointment}</span>
-              </button>
 
-              <a
-                href="tel:9922300842"
-                id="btn-hero-call"
-                className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-sky-200 hover:text-white font-semibold px-5 py-3.5 rounded-xl border border-slate-700 transition-colors text-sm sm:text-base"
-              >
-                <Phone className="w-4 h-4 text-teal-400" />
-                <span>{t.callNow}</span>
-              </a>
 
-              <button
-                id="btn-hero-ai-consult"
-                onClick={onAiConsultClick}
-                className="inline-flex items-center gap-2 bg-sky-950/80 hover:bg-sky-900 text-teal-300 font-semibold px-4 py-3 rounded-xl border border-teal-500/40 text-xs sm:text-sm transition-all"
-              >
-                <Sparkles className="w-4 h-4 text-teal-400" />
-                <span>{t.askAiAssistant}</span>
-              </button>
-            </div>
-
-            {/* Quick Stat Bar */}
-            <div className="pt-4 border-t border-slate-800 grid grid-cols-3 gap-4 max-w-lg text-center">
-              <div>
+            {/* Quick Stat Bar across 4 full columns */}
+            <div className="pt-4 border-t border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+              <div className="p-2 bg-slate-800/40 rounded-xl border border-slate-800">
                 <p className="text-xl sm:text-2xl font-extrabold text-teal-400">100%</p>
-                <p className="text-[11px] text-slate-400 font-medium uppercase">Sterile & Safe</p>
+                <p className="text-[11px] text-slate-300 font-medium uppercase">Sterile & Safe</p>
               </div>
-              <div>
+              <div className="p-2 bg-slate-800/40 rounded-xl border border-slate-800">
                 <p className="text-xl sm:text-2xl font-extrabold text-sky-400">Digital</p>
-                <p className="text-[11px] text-slate-400 font-medium uppercase">RVG Low-Radiation</p>
+                <p className="text-[11px] text-slate-300 font-medium uppercase">RVG Low-Radiation</p>
               </div>
-              <div>
+              <div className="p-2 bg-slate-800/40 rounded-xl border border-slate-800">
                 <p className="text-xl sm:text-2xl font-extrabold text-rose-400">Painless</p>
-                <p className="text-[11px] text-slate-400 font-medium uppercase">Single Sitting RCT</p>
+                <p className="text-[11px] text-slate-300 font-medium uppercase">Single Sitting RCT</p>
+              </div>
+              <div className="p-2 bg-slate-800/40 rounded-xl border border-slate-800">
+                <p className="text-xl sm:text-2xl font-extrabold text-amber-400">Gentle</p>
+                <p className="text-[11px] text-slate-300 font-medium uppercase">Zero Anxiety Care</p>
               </div>
             </div>
 

@@ -21,11 +21,11 @@ export const SmileGallery: React.FC<SmileGalleryProps> = ({ currentLang }) => {
   };
 
   return (
-    <section id="gallery" className="py-16 bg-white border-t border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+    <section id="gallery" className="py-12 bg-white border-t border-slate-200">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <div className="text-center max-w-5xl mx-auto mb-10">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-800 text-xs font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5 text-teal-600" />
             <span>Smile Outcomes</span>
@@ -38,8 +38,8 @@ export const SmileGallery: React.FC<SmileGalleryProps> = ({ currentLang }) => {
           </p>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Gallery Grid (4 columns on xl screens) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {smileTransformationsData.map((item) => {
             const pos = sliderPositions[item.id] || 50;
             const title = currentLang === 'en' ? item.titleEn : item.titleMr;

@@ -13,12 +13,12 @@ export const ReviewsAndFaqs: React.FC<ReviewsAndFaqsProps> = ({ currentLang }) =
   const [openFaq, setOpenFaq] = useState<string>('f1');
 
   return (
-    <section className="py-16 bg-slate-50 border-t border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-16">
+    <section id="reviews-faqs" className="py-12 bg-slate-50 border-t border-slate-200">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-8 space-y-16">
         
         {/* Patient Reviews Section */}
         <div>
-          <div className="text-center max-w-3xl mx-auto mb-10">
+          <div className="text-center max-w-5xl mx-auto mb-10">
             <span className="text-xs font-bold text-teal-700 uppercase tracking-widest bg-teal-100 px-3 py-1 rounded-full border border-teal-200">
               {t.reviewsTitle}
             </span>
@@ -30,7 +30,7 @@ export const ReviewsAndFaqs: React.FC<ReviewsAndFaqsProps> = ({ currentLang }) =
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6">
             {reviewsData.map((review) => {
               const comment = currentLang === 'en' ? review.commentEn : review.commentMr;
 

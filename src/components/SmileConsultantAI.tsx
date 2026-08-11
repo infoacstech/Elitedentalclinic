@@ -1,15 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, Send, User, Bot, RefreshCw, Calendar, Phone, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Send, User, Bot, RefreshCw, Calendar, Activity, MessageSquare } from 'lucide-react';
 import { Language, ChatMessage } from '../types';
 import { translations } from '../data/translations';
+import { DentalRiskQuiz } from './DentalRiskQuiz';
 
 interface SmileConsultantAIProps {
   currentLang: Language;
-  onBookClick: () => void;
+  onBookClick: (suggestedService?: string) => void;
 }
 
 export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLang, onBookClick }) => {
   const t = translations[currentLang];
+  const [activeTab, setActiveTab] = useState<'chat' | 'quiz'>('chat');
 
   const initialGreeting = currentLang === 'en'
     ? "Hello! I am Dr. Ankita Goklani's AI Dental Assistant. Ask me anything about root canals, tooth fillings, dental implants, digital X-rays, or clinic timings!"
@@ -46,10 +48,10 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
       isInitialMount.current = false;
       return;
     }
-    if (chatContainerRef.current) {
+    if (activeTab === 'chat' && chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, activeTab]);
 
   const getClientFallback = (query: string): string => {
     const q = query.toLowerCase();
@@ -89,95 +91,75 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
 
     if (q.includes("child") || q.includes("kid") || q.includes("pediatric") || q.includes("मुले") || q.includes("बाळ")) {
       return isMarathi
-        ? `**लहान मुलांचे दंत उपचार (Pediatric Dentistry):**\n\nहोय, डॉ. अंकिता गोकलानी मुलांसाठी अत्यंत काळजीपूर्वक व स्नेहाळ दंत उपचार पुरवतात. फ्लुओराइड कोटिंग आणि किडीवरील उपचारांसाठी **९९२२३००८४२** वर कॉल करा!`
-        : `**Pediatric & Child Dental Care:**\n\nYes! Dr. Ankita Goklani provides gentle, child-friendly dental care including cavity prevention sealants and painless tooth restorations. Call **9922300842**!`;
-    }
-
-    if (q.includes("brace") || q.includes("aligner") || q.includes("straight") || q.includes("वेडेवाकडे") || q.includes("तार")) {
-      return isMarathi
-        ? `**दातांचे ब्रेसेस व अलाईनर्स:**\n\nआम्ही वेडेवाकडे दात सरळ करण्यासाठी मेटल ब्रेसेस, सेरामिक ब्रेसेस आणि इनव्हिजिबल अलाईनर्स (Invisalign) चे उपचार पुरवतो. सल्ल्यासाठी **९९२२३००८४२** वर संपर्क साधू शकता!`
-        : `**Teeth Straightening (Braces & Aligners):**\n\nWe offer Metal Braces, Ceramic Tooth-Colored Braces, and Clear Invisible Aligners to correct crooked or misaligned teeth. Call **9922300842** for a consultation!`;
+        ? `**लहान मुलांच्या दातांचे उपचार:** डॉ. अंकिता गोकलानी लहान मुलांवर प्रेमळ आणि त्रासमुक्त उपचार करतात. फोन: ९९२२३००८४२`
+        : `**Pediatric Dental Care:** Gentle care for children by Dr. Ankita Goklani. Call 9922300842.`;
     }
 
     return isMarathi
-      ? `**डॉ. अंकिता गोकलानीज् एलाईट डेंटल केअर मध्ये आपले स्वागत आहे!**\n\nआमच्या क्लिनिकमध्ये रूट कॅनाल, इम्प्लांट, डिजिटल एक्स-रे, दात पांढरे करणे आणि लहान मुलांचे दंत उपचार उपलब्ध आहेत. सल्ल्यासाठी **९९२२३००८४२** वर कॉल करा किंवा ऑनलाईन अपॉइंटमेंट बुक करा!`
-      : `**Welcome to Dr. Ankita Goklani's Elite Dental Care!**\n\nWe offer painless Root Canal Treatments, Dental Implants, Braces, Digital X-Rays, and Child Dental Care in Jawahar Colony. To consult Dr. Ankita Goklani (M.D.S), call **9922300842** or click "Book Appointment" above!`;
+      ? `**डॉ. अंकिता गोकलानीज् एलाईट डेंटल केअर**\n\nतुमच्या प्रश्नाबद्दल अधिक माहितीसाठी किंवा डॉक्टरांशी थेट बोलण्यासाठी कृपया **९९२२३००८४२** वर संपर्क साधा किंवा अपॉइंटमेंट बुक करा!`
+      : `**Dr. Ankita Goklani's Elite Dental Care**\n\nFor personalized advice or to schedule a consultation with Dr. Ankita Goklani (M.D.S), please call **9922300842** or use our online appointment booking system below!`;
   };
 
-  const handleSend = async (textToSend?: string) => {
-    const text = textToSend || inputMessage;
-    if (!text.trim() || loading) return;
+  const handleSend = async (messageToSend?: string) => {
+    const userQuery = messageToSend || inputMessage;
+    if (!userQuery.trim()) return;
 
     const userMsg: ChatMessage = {
       id: Date.now().toString(),
       sender: 'user',
-      text,
+      text: userQuery,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
     setMessages(prev => [...prev, userMsg]);
-    if (!textToSend) setInputMessage('');
+    if (!messageToSend) setInputMessage('');
     setLoading(true);
 
     try {
-      let replyText = '';
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userQuery,
+          language: currentLang
+        })
+      });
 
-      try {
-        const res = await fetch('/api/dental-consult', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: text,
-            conversationHistory: messages.map(m => ({ sender: m.sender, text: m.text }))
-          })
-        });
-
-        if (res.ok) {
-          const contentType = res.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            const data = await res.json();
-            replyText = data?.reply || '';
-          }
-        }
-      } catch (fetchErr) {
-        console.info('Backend API unavailable, using client-side AI fallback:', fetchErr);
+      if (response.ok) {
+        const data = await response.json();
+        const botMsg: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          sender: 'assistant',
+          text: data.reply || getClientFallback(userQuery),
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+        setMessages(prev => [...prev, botMsg]);
+      } else {
+        throw new Error('API request failed');
       }
-
-      if (!replyText) {
-        replyText = getClientFallback(text);
-      }
-
-      const assistantMsg: ChatMessage = {
+    } catch {
+      const fallbackText = getClientFallback(userQuery);
+      const botMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         sender: 'assistant',
-        text: replyText,
+        text: fallbackText,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
-
-      setMessages(prev => [...prev, assistantMsg]);
-    } catch (err: any) {
-      const fallbackReply = getClientFallback(text);
-      const errorMsg: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        sender: 'assistant',
-        text: fallbackReply,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setMessages(prev => [...prev, errorMsg]);
+      setMessages(prev => [...prev, botMsg]);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section id="ai-assistant" className="py-16 bg-gradient-to-b from-sky-50 to-slate-100">
-      <div className="max-w-4xl mx-auto px-4 sm:px-8">
+    <section id="ai-assistant" className="py-12 bg-gradient-to-b from-sky-50 to-slate-100 border-t border-slate-200">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-8">
+        <div className="text-center max-w-5xl mx-auto mb-8">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-xs font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-4 h-4 text-teal-600" />
-            <span>AI Dental Consultation</span>
+            <span>AI Dental Consultation & Assessment</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             {t.aiAssistantTitle}
@@ -185,121 +167,268 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
           <p className="text-xs sm:text-sm text-slate-600 mt-1">
             {t.aiAssistantSub}
           </p>
-        </div>
 
-        {/* Chat Window Frame */}
-        <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-[520px]">
-          
-          {/* Chat Top Bar */}
-          <div className="bg-slate-900 text-white px-6 py-3.5 flex items-center justify-between border-b border-slate-800">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-teal-300 shrink-0">
-                <Bot className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <span>Dr. Ankita's AI Assistant</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                </h3>
-                <p className="text-[11px] text-sky-200">
-                  Powered by Gemini 3.6 Flash | Dr. Ankita Goklani's Elite Dental Care
-                </p>
-              </div>
-            </div>
+          {/* Interactive Mode Toggle Bar */}
+          <div className="mt-6 inline-flex p-1 bg-slate-200/80 rounded-2xl border border-slate-300 shadow-inner">
+            <button
+              id="tab-ai-chat"
+              onClick={() => setActiveTab('chat')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                activeTab === 'chat'
+                  ? 'bg-white text-slate-900 shadow-md border border-slate-200'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <MessageSquare className="w-4 h-4 text-teal-600" />
+              <span>{currentLang === 'en' ? "AI Chat Consultation" : "एआय चॅट सल्लागार"}</span>
+            </button>
 
             <button
-              id="btn-book-from-ai"
-              onClick={onBookClick}
-              className="hidden sm:inline-flex items-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
+              id="tab-ai-quiz"
+              onClick={() => setActiveTab('quiz')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                activeTab === 'quiz'
+                  ? 'bg-white text-slate-900 shadow-md border border-slate-200'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
             >
-              <Calendar className="w-3.5 h-3.5" />
-              <span>Book Appointment</span>
+              <Activity className="w-4 h-4 text-rose-500" />
+              <span>{currentLang === 'en' ? "Dental Risk Assessment" : "दंत धोका मूल्यांकन"}</span>
+              <span className="text-[10px] bg-rose-500 text-white font-extrabold px-2 py-0.5 rounded-full animate-pulse">
+                QUIZ
+              </span>
             </button>
           </div>
+        </div>
 
-          {/* Messages Area */}
-          <div ref={chatContainerRef} className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 bg-slate-50/50">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                {msg.sender === 'assistant' && (
-                  <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-xs">
-                    <Bot className="w-4 h-4" />
+        {/* Main Content Layout Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Left Column: Feature Highlight Card */}
+          <div className="lg:col-span-4 bg-white rounded-2xl p-6 shadow-xl border border-slate-200 space-y-6">
+            {activeTab === 'chat' ? (
+              <>
+                <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                  <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600 shrink-0">
+                    <Bot className="w-5 h-5" />
                   </div>
-                )}
-
-                <div className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 shadow-xs text-xs sm:text-sm leading-relaxed ${
-                  msg.sender === 'user'
-                    ? 'bg-gradient-to-r from-teal-600 to-sky-600 text-white rounded-tr-none'
-                    : 'bg-white text-slate-800 border border-slate-200 rounded-tl-none'
-                }`}>
-                  <p className="whitespace-pre-line">{msg.text}</p>
-                  <span className={`text-[10px] mt-2 block text-right font-medium ${
-                    msg.sender === 'user' ? 'text-sky-200' : 'text-slate-400'
-                  }`}>
-                    {msg.timestamp}
-                  </span>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900">Dr. Ankita's AI Assistant</h3>
+                    <p className="text-xs text-slate-500">24/7 Virtual Dental Guidance</p>
+                  </div>
                 </div>
 
-                {msg.sender === 'user' && (
-                  <div className="w-8 h-8 rounded-full bg-sky-800 text-white flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-xs">
-                    <User className="w-4 h-4" />
-                  </div>
-                )}
-              </div>
-            ))}
+                <div className="space-y-3 text-xs text-slate-600">
+                  <p className="leading-relaxed">
+                    {currentLang === 'en'
+                      ? "Ask any question regarding root canals, pain relief, dental implants, teeth whitening, or clinic appointment availability."
+                      : "रूट कॅनाल, दातदुखीवरील उपाय, इम्प्लांट किंवा उपचारांबद्दल कोणताही प्रश्न विचारा."}
+                  </p>
 
-            {loading && (
-              <div className="flex items-center gap-2 text-xs text-slate-500 bg-white p-3 rounded-2xl border border-slate-200 w-max">
-                <RefreshCw className="w-3.5 h-3.5 animate-spin text-teal-600" />
-                <span>Dr. Ankita's AI is processing your dental query...</span>
-              </div>
+                  <div className="bg-sky-50 p-3 rounded-xl border border-sky-200/80 space-y-1">
+                    <span className="font-bold text-sky-900 block text-[11px] uppercase">Assistant Capabilities:</span>
+                    <ul className="list-disc list-inside space-y-1 text-slate-700">
+                      <li>Instant symptom triage</li>
+                      <li>Treatment cost estimates</li>
+                      <li>Post-procedure care tips</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-slate-100 space-y-2.5">
+                  <button
+                    onClick={() => setActiveTab('quiz')}
+                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                  >
+                    <Activity className="w-4 h-4 text-rose-400" />
+                    <span>{currentLang === 'en' ? "Take Dental Risk Assessment Quiz" : "दंत आरोग्य क्विझ सोडवा"}</span>
+                  </button>
+
+                  <button
+                    onClick={() => onBookClick()}
+                    className="w-full bg-gradient-to-r from-teal-600 to-sky-600 hover:from-teal-700 hover:to-sky-700 text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                  >
+                    <Calendar className="w-4 h-4" />
+                    <span>{t.bookAppointment}</span>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                  <div className="w-10 h-10 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 shrink-0">
+                    <Activity className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900">Health Risk Assessment</h3>
+                    <p className="text-xs text-slate-500">5-Question Self Triage</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3 text-xs text-slate-600">
+                  <p className="leading-relaxed">
+                    {currentLang === 'en'
+                      ? "Evaluate your tooth sensitivity, gum health, and hygiene habits to get personalized care recommendations from Dr. Ankita Goklani."
+                      : "तुमच्या दातांच्या आरोग्याचे मोजमाप करा आणि तुमच्यासाठी सुचवलेल्या उपचारांची माहिती मिळवा."}
+                  </p>
+
+                  <div className="bg-rose-50 p-3 rounded-xl border border-rose-200/80 space-y-1">
+                    <span className="font-bold text-rose-900 block text-[11px] uppercase">Assessment Highlights:</span>
+                    <ul className="list-disc list-inside space-y-1 text-slate-700">
+                      <li>Calculates custom risk score</li>
+                      <li>Detects early pulp & gum risks</li>
+                      <li>Generates direct treatment advice</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-slate-100 space-y-2.5">
+                  <button
+                    onClick={() => setActiveTab('chat')}
+                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                  >
+                    <MessageSquare className="w-4 h-4 text-teal-400" />
+                    <span>{currentLang === 'en' ? "Switch to AI Chat Assistant" : "एआय चॅट कडे जा"}</span>
+                  </button>
+
+                  <button
+                    onClick={() => onBookClick()}
+                    className="w-full bg-gradient-to-r from-teal-600 to-sky-600 hover:from-teal-700 hover:to-sky-700 text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                  >
+                    <Calendar className="w-4 h-4" />
+                    <span>{t.bookAppointment}</span>
+                  </button>
+                </div>
+              </>
             )}
           </div>
 
-          {/* Suggested Quick Questions */}
-          <div className="px-4 py-2 bg-slate-100 border-t border-slate-200 flex items-center gap-2 overflow-x-auto no-scrollbar">
-            <span className="text-[10px] font-bold text-slate-500 uppercase shrink-0">Quick Ask:</span>
-            {suggestedQuestions.map((q, idx) => (
-              <button
-                key={idx}
-                id={`btn-suggested-q-${idx}`}
-                onClick={() => handleSend(q)}
-                className="text-[11px] bg-white hover:bg-sky-50 text-slate-700 hover:text-teal-700 font-medium px-2.5 py-1 rounded-full border border-slate-200 whitespace-nowrap transition-colors shrink-0"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
-
-          {/* Input Box */}
-          <div className="p-3 bg-white border-t border-slate-200">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSend();
-              }}
-              className="flex items-center gap-2"
-            >
-              <input
-                id="input-ai-chat"
-                type="text"
-                placeholder={t.typeQuestion}
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                className="flex-1 bg-slate-50 text-slate-900 text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          {/* Right Column: Active Interactive Tool Frame */}
+          <div className="lg:col-span-8">
+            {activeTab === 'quiz' ? (
+              <DentalRiskQuiz
+                currentLang={currentLang}
+                onBookClick={(service) => onBookClick(service)}
+                onSendToChat={(summary) => {
+                  setActiveTab('chat');
+                  handleSend(summary);
+                }}
               />
-              <button
-                id="btn-send-ai-chat"
-                type="submit"
-                disabled={loading || !inputMessage.trim()}
-                className="bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white font-bold p-2.5 rounded-xl shadow-md transition-all shrink-0"
-              >
-                <Send className="w-4 h-4" />
-              </button>
-            </form>
+            ) : (
+              <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-[540px]">
+                {/* Chat Top Bar */}
+                <div className="bg-slate-900 text-white px-6 py-3.5 flex items-center justify-between border-b border-slate-800">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-teal-300 shrink-0">
+                      <Bot className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                        <span>Dr. Ankita's AI Assistant</span>
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      </h3>
+                      <p className="text-[11px] text-sky-200">
+                        Powered by Gemini 3.6 Flash | Dr. Ankita Goklani's Elite Dental Care
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    id="btn-book-from-ai"
+                    onClick={() => onBookClick()}
+                    className="hidden sm:inline-flex items-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>Book Appointment</span>
+                  </button>
+                </div>
+
+                {/* Messages Area */}
+                <div ref={chatContainerRef} className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 bg-slate-50/50">
+                  {messages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      {msg.sender === 'assistant' && (
+                        <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-xs">
+                          <Bot className="w-4 h-4" />
+                        </div>
+                      )}
+
+                      <div className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 shadow-xs text-xs sm:text-sm leading-relaxed ${
+                        msg.sender === 'user'
+                          ? 'bg-gradient-to-r from-teal-600 to-sky-600 text-white rounded-tr-none'
+                          : 'bg-white text-slate-800 border border-slate-200 rounded-tl-none'
+                      }`}>
+                        <p className="whitespace-pre-line">{msg.text}</p>
+                        <span className={`text-[10px] mt-2 block text-right font-medium ${
+                          msg.sender === 'user' ? 'text-sky-200' : 'text-slate-400'
+                        }`}>
+                          {msg.timestamp}
+                        </span>
+                      </div>
+
+                      {msg.sender === 'user' && (
+                        <div className="w-8 h-8 rounded-full bg-sky-800 text-white flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-xs">
+                          <User className="w-4 h-4" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+
+                  {loading && (
+                    <div className="flex items-center gap-2 text-xs text-slate-500 bg-white p-3 rounded-2xl border border-slate-200 w-max">
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin text-teal-600" />
+                      <span>Dr. Ankita's AI is processing your dental query...</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Suggested Quick Questions */}
+                <div className="px-4 py-2 bg-slate-100 border-t border-slate-200 flex items-center gap-2 overflow-x-auto no-scrollbar">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase shrink-0">Quick Ask:</span>
+                  {suggestedQuestions.map((q, idx) => (
+                    <button
+                      key={idx}
+                      id={`btn-suggested-q-${idx}`}
+                      onClick={() => handleSend(q)}
+                      className="text-[11px] bg-white hover:bg-sky-50 text-slate-700 hover:text-teal-700 font-medium px-2.5 py-1 rounded-full border border-slate-200 whitespace-nowrap transition-colors shrink-0"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Input Box */}
+                <div className="p-3 bg-white border-t border-slate-200">
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleSend();
+                    }}
+                    className="flex items-center gap-2"
+                  >
+                    <input
+                      id="input-ai-chat"
+                      type="text"
+                      placeholder={t.typeQuestion}
+                      value={inputMessage}
+                      onChange={(e) => setInputMessage(e.target.value)}
+                      className="flex-1 bg-slate-50 text-slate-900 text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                    <button
+                      id="btn-send-ai-chat"
+                      type="submit"
+                      disabled={loading || !inputMessage.trim()}
+                      className="bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white font-bold p-2.5 rounded-xl shadow-md transition-all shrink-0"
+                    >
+                      <Send className="w-4 h-4" />
+                    </button>
+                  </form>
+                </div>
+              </div>
+            )}
           </div>
 
         </div>

@@ -19,8 +19,8 @@ export const ClinicLocationTimings: React.FC<ClinicLocationTimingsProps> = ({
   const mapSearchUrl = "https://www.google.com/maps/search/?api=1&query=71/A,+Sunny+Clinic,+New+Shantiniketan+Colony,+Jawahar+Colony,+Chhatrapati+Sambhajinagar";
 
   return (
-    <section id="contact" className="py-16 bg-white border-t border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+    <section id="contact" className="py-12 bg-white border-t border-slate-200">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-8">
         
         <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
           

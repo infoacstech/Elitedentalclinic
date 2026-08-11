@@ -54,7 +54,7 @@ export const EmergencyDentalCard: React.FC<EmergencyDentalCardProps> = ({
   ];
 
   return (
-    <div id="emergency-dental-card" className="max-w-7xl mx-auto px-4 sm:px-8 my-6">
+    <div id="emergency-dental-card" className="max-w-[1536px] mx-auto px-4 sm:px-8 my-6">
       <div className="bg-gradient-to-br from-slate-900 via-rose-950/90 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-rose-500/40 relative overflow-hidden transition-all">
         
         {/* Subtle Background Glows */}

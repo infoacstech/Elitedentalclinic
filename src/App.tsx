@@ -10,7 +10,7 @@ import { SmileConsultantAI } from './components/SmileConsultantAI';
 import { SmileGallery } from './components/SmileGallery';
 import { ReviewsAndFaqs } from './components/ReviewsAndFaqs';
 import { ClinicLocationTimings } from './components/ClinicLocationTimings';
-import { MobileActionBar } from './components/MobileActionBar';
+import { FloatingAiWidget } from './components/FloatingAiWidget';
 import { EmergencyDentalCard } from './components/EmergencyDentalCard';
 import { ToastContainer, ToastMessage } from './components/Toast';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
@@ -23,6 +23,81 @@ export default function App() {
   const [isOpenNow, setIsOpenNow] = useState(false); // Default to closed for demonstration/safety or auto-calc
   const [manualOverrideStatus, setManualOverrideStatus] = useState<boolean | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const [activeSection, setActiveSection] = useState<string>('hero');
+
+  const sectionTitles: Record<string, { en: string; mr: string }> = {
+    hero: {
+      en: "Dr. Ankita Goklani's Elite Dental Care | Chhatrapati Sambhajinagar",
+      mr: "डॉ. अंकिता गोकलाणींचे एलिट डेंटल केअर | छत्रपती संभाजीनगर",
+    },
+    doctor: {
+      en: "Meet Dr. Ankita Goklani (M.D.S) | Elite Dental Care",
+      mr: "डॉ. अंकिता गोकलाणी (एम.डी.एस) | एलिट डेंटल केअर",
+    },
+    facilities: {
+      en: "Dental Treatments & Facilities | Elite Dental Care",
+      mr: "उपचार व दंत आरोग्य सुविधा | एलिट डेंटल केअर",
+    },
+    'ai-assistant': {
+      en: "AI Dental Health Assistant | Elite Dental Care",
+      mr: "एआय दंत आरोग्य सल्लागार | एलिट डेंटल केअर",
+    },
+    gallery: {
+      en: "Smile Transformation Gallery | Elite Dental Care",
+      mr: "स्माईल ट्रान्सफॉर्मेशन गॅलरी | एलिट डेंटल केअर",
+    },
+    'reviews-faqs': {
+      en: "Patient Reviews & FAQs | Elite Dental Care",
+      mr: "रुग्णांचे अभिप्राय व प्रश्न | एलिट डेंटल केअर",
+    },
+    contact: {
+      en: "Location, Timings & Contact | Elite Dental Care",
+      mr: "पत्ता, संपर्क व वेळ | एलिट डेंटल केअर",
+    },
+  };
+
+  // IntersectionObserver to detect active section when scrolling
+  useEffect(() => {
+    const sectionIds = ['hero', 'doctor', 'facilities', 'ai-assistant', 'gallery', 'reviews-faqs', 'contact'];
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries.find((entry) => entry.isIntersecting);
+        if (visibleEntry && visibleEntry.target.id) {
+          setActiveSection(visibleEntry.target.id);
+        }
+      },
+      {
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: 0.1,
+      }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+
+    return () => {
+      elements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
+
+  // Dynamically update document title on section / lang / modal state change
+  useEffect(() => {
+    if (isAppointmentOpen) {
+      document.title =
+        currentLang === 'en'
+          ? "Book Appointment | Dr. Ankita Goklani's Elite Dental Care"
+          : 'अपॉइंटमेंट बुक करा | एलिट डेंटल केअर';
+      return;
+    }
+
+    const titleObj = sectionTitles[activeSection] || sectionTitles['hero'];
+    document.title = titleObj[currentLang] || titleObj['en'];
+  }, [activeSection, currentLang, isAppointmentOpen]);
 
   const addToast = (toast: { title: string; message: string; type: 'success' | 'error' | 'info' }) => {
     const newToast: ToastMessage = {
@@ -139,7 +214,7 @@ export default function App() {
           />
         ) : (
           /* Notice banner allowing users to open emergency protocol even when clinic is open */
-          <div className="max-w-7xl mx-auto px-4 sm:px-8 my-4">
+          <div className="max-w-[1536px] mx-auto px-4 sm:px-8 my-4">
             <div className="bg-slate-50 border border-rose-200 rounded-2xl p-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
               <div className="flex items-center gap-2 text-rose-800 font-semibold">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
@@ -174,7 +249,7 @@ export default function App() {
         {/* Interactive AI Dental Health Assistant */}
         <SmileConsultantAI
           currentLang={currentLang}
-          onBookClick={() => handleOpenAppointment()}
+          onBookClick={(service) => handleOpenAppointment(service)}
         />
 
         {/* Before & After Smile Gallery */}
@@ -197,7 +272,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="bg-slate-950 text-slate-400 text-xs py-8 px-4 sm:px-8 border-t border-slate-900">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <div className="max-w-[1536px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
             <p className="font-bold text-slate-200">
               Dr. Ankita Goklani's Elite Dental Care | {t.marathiClinicTitleTag}
@@ -225,11 +300,8 @@ export default function App() {
       {/* Global Toast Notifications */}
       <ToastContainer toasts={toasts} onDismiss={removeToast} />
 
-      {/* Mobile Sticky Floating Action Bar */}
-      <MobileActionBar
-        currentLang={currentLang}
-        onBookClick={() => handleOpenAppointment()}
-      />
+      {/* Floating AI Assistant Widget on Bottom Right */}
+      <FloatingAiWidget currentLang={currentLang} />
 
     </div>
   );

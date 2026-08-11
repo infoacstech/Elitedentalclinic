@@ -12,11 +12,11 @@ export const DoctorProfile: React.FC<DoctorProfileProps> = ({ currentLang }) => 
   const t = translations[currentLang];
 
   return (
-    <section id="doctor" className="py-16 bg-slate-50 border-y border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+    <section id="doctor" className="py-12 bg-slate-50 border-y border-slate-200/80">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <div className="text-center max-w-5xl mx-auto mb-10">
           <span className="text-xs font-bold text-teal-700 uppercase tracking-widest bg-teal-100/80 px-3 py-1 rounded-full border border-teal-200">
             {t.meetTheSurgeon}
           </span>
