@@ -1,8 +1,9 @@
 import React from 'react';
-import { ShieldCheck, Award, CheckCircle, ArrowRight, UserCheck, Sparkles } from 'lucide-react';
+import { ShieldCheck, Award, CheckCircle, UserCheck, Sparkles } from 'lucide-react';
 import { Language } from '../types';
 import { translations } from '../data/translations';
 import { doctorDetails } from '../data/clinicData';
+import { DailyDentalTipCard } from './DailyDentalTipCard';
 
 interface HeroProps {
   currentLang: Language;
@@ -87,6 +88,11 @@ export const Hero: React.FC<HeroProps> = ({ currentLang, onBookClick, onAiConsul
             </div>
 
 
+
+            {/* Daily Dental Tip Card */}
+            <div className="pt-2">
+              <DailyDentalTipCard currentLang={currentLang} />
+            </div>
 
             {/* Quick Stat Bar across 4 full columns */}
             <div className="pt-4 border-t border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
