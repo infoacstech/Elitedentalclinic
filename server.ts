@@ -267,7 +267,7 @@ app.get("/api/appointments", (_req, res) => {
 });
 
 // AI Dental Assistant Endpoint powered by Gemini 3.6 Flash & Knowledge Base Engine
-app.post("/api/dental-consult", async (req, res) => {
+app.post(["/api/dental-consult", "/api/chat"], async (req, res) => {
   try {
     const { message, conversationHistory = [] } = req.body;
 

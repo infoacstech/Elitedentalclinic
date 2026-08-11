@@ -121,7 +121,8 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: userQuery,
-          language: currentLang
+          language: currentLang,
+          conversationHistory: messages.map(m => ({ sender: m.sender, text: m.text }))
         })
       });
 
@@ -311,7 +312,9 @@ export const SmileConsultantAI: React.FC<SmileConsultantAIProps> = ({ currentLan
                 onBookClick={(service) => onBookClick(service)}
                 onSendToChat={(summary) => {
                   setActiveTab('chat');
-                  handleSend(summary);
+                  setTimeout(() => {
+                    handleSend(summary);
+                  }, 100);
                 }}
               />
             ) : (

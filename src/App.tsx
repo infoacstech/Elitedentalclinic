@@ -10,7 +10,6 @@ import { SmileConsultantAI } from './components/SmileConsultantAI';
 import { SmileGallery } from './components/SmileGallery';
 import { ReviewsAndFaqs } from './components/ReviewsAndFaqs';
 import { ClinicLocationTimings } from './components/ClinicLocationTimings';
-import { FloatingAiWidget } from './components/FloatingAiWidget';
 import { EmergencyDentalCard } from './components/EmergencyDentalCard';
 import { ToastContainer, ToastMessage } from './components/Toast';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
@@ -299,9 +298,6 @@ export default function App() {
 
       {/* Global Toast Notifications */}
       <ToastContainer toasts={toasts} onDismiss={removeToast} />
-
-      {/* Floating AI Assistant Widget on Bottom Right */}
-      <FloatingAiWidget currentLang={currentLang} />
 
     </div>
   );
